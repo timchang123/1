@@ -10,10 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # 1. 取得 repo
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true   # 允許 commit 回 repo
+- name: Checkout code
+  uses: actions/checkout@v4
+  with:
+    persist-credentials: true
+
 
       # 2. 設定 Python
       - name: Set up Python
@@ -26,11 +27,12 @@ jobs:
         run: python script.py
 
       # 4. 自動 commit & push 結果
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add output.txt
-          git commit -m "Update output.txt from GitHub Actions" || echo "No changes to commit"
-          git push
+- name: Commit and push changes
+  run: |
+    git config --local user.email "action@github.com"
+    git config --local user.name "GitHub Action"
+    git add output.txt
+    git commit -m "Update output.txt from GitHub Actions" || echo "No changes to commit"
+    git push
+
           
