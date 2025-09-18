@@ -1,9 +1,9 @@
 name: Run Python Script and Commit Result
 
 on:
-  workflow_dispatch:      # 手動執行
-  schedule:
-    - cron: "0 0 * * *"  # 每天 UTC 0 點自動執行
+  workflow_dispatch:       # 手動觸發
+  schedule:                # 自動排程
+    - cron: "0 0 * * *"   # 每天 UTC 0 點執行
 
 jobs:
   run-and-commit:
