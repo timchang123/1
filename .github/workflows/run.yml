@@ -9,7 +9,6 @@ jobs:
   run-and-commit:
     runs-on: ubuntu-latest
     steps:
-      # 1. 取得 repo
 - name: Checkout code
   uses: actions/checkout@v4
   with:
