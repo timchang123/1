@@ -38,7 +38,13 @@ def upload_to_drive(image_content, image_name):
         'name': image_name,
         'parents': [SHARED_DRIVE_FOLDER_ID]
     }
-
+    file = service.files().create(
+        body=file_metadata,
+        media_body=media,
+        fields='id',
+        supportsAllDrives=True  # 這行必須有
+    ).execute()
+   
     media = MediaIoBaseUpload(io.BytesIO(image_content.getvalue()), mimetype='image/jpeg')
     file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
     print("✅ 上傳成功，檔案 ID:", file.get('id'))
