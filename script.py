@@ -4,6 +4,12 @@ from datetime import datetime
 import pytesseract
 import io
 import gspread
+import json
+with open("service_account.json") as f:
+    data = f.read()
+    print("Service Account JSON Preview:", data[:200])  # 只印前200字
+    json.loads(data)  # 驗證 JSON 格式
+    
 from google.oauth2.service_account import Credentials
 
 # 設定參數
