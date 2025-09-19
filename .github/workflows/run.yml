@@ -1,36 +1,33 @@
-name: Run Python Script and Commit Result
+name: Run OCR Script
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:   # 手動執行
   schedule:
-    - cron: "0 0 * * *"
-
-permissions:
-  contents: write   # ⭐ 關鍵：允許 Actions 寫入 repo
+    - cron: "0 0 * * *"   # 每天 00:00 UTC 執行一次
 
 jobs:
-  run-and-commit:
+  ocr:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v4
+
+      - name: Install Tesseract
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-tra
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Run Python script
-        run: python script.py
-
-      - name: Commit and push changes
+      - name: Install dependencies
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add output.txt
-          git commit -m "Update output.txt from GitHub Actions" || echo "No changes to commit"
-          git push
+          pip install pytesseract Pillow requests gspread google-auth google-auth-oauthlib
+
+      - name: Setup credentials
+        run: echo "${{ secrets.GCP_KEY }}" > service_account.json
+
+      - name: Run script
+        run: python script.py
