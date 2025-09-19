@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pydrive2 pytesseract Pillow requests gspread google-auth google-auth-oauthlib
+        pip install requests pillow pytesseract gspread google-auth google-api-python-client
 
       - name: Setup credentials
         run: echo '${{ secrets.GCP_KEY }}' > service_account.json
