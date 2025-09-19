@@ -14,7 +14,7 @@ from google.oauth2.service_account import Credentials
 
 # 設定參數
 IMAGE_URL = "https://baci.168nana168.com/upload/%E6%9D%BF%E6%A9%8B_2505052_%E4%BF%83%E9%8A%B7%E5%90%8D%E5%96%AE/1.jpg"
-SPREADSHEET_ID = "你的試算表ID"
+SPREADSHEET_ID = "1sZs2F3aVYsoXZWGCramI3c3-q3-YJcxFWAMGZgcW0Ag"
 
 def main():
     # 下載圖片
