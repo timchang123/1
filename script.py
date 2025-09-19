@@ -29,25 +29,28 @@ def authenticate_gspread():
 
 
 def upload_to_drive(image_content, image_name):
-    """上傳圖片到 Google Drive"""
+    """上傳圖片到 Google Drive (Shared Drive)"""
     scopes = ["https://www.googleapis.com/auth/drive"]
     creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=scopes)
-    service = build('drive', 'v3', credentials=creds)
+    service = build("drive", "v3", credentials=creds)
 
     file_metadata = {
-        'name': image_name,
-        'parents': [SHARED_DRIVE_FOLDER_ID]
+        "name": image_name,
+        "parents": [SHARED_DRIVE_FOLDER_ID],
     }
+
+    # 確保 image_content 是 BytesIO，重設游標
+    image_content.seek(0)
+    media = MediaIoBaseUpload(image_content, mimetype="image/jpeg")
+
     file = service.files().create(
         body=file_metadata,
         media_body=media,
-        fields='id',
-        supportsAllDrives=True  # 這行必須有
+        fields="id",
+        supportsAllDrives=True
     ).execute()
-   
-    media = MediaIoBaseUpload(io.BytesIO(image_content.getvalue()), mimetype='image/jpeg')
-    file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-    print("✅ 上傳成功，檔案 ID:", file.get('id'))
+
+    print("✅ 上傳成功，檔案 ID:", file.get("id"))
 
 
 def main():
@@ -64,6 +67,7 @@ def main():
 
     # === OCR 辨識文字 ===
     print("正在執行 OCR...")
+    image_content.seek(0)  # OCR 前要重設游標
     image = Image.open(image_content)
     extracted_text = pytesseract.image_to_string(image, lang="chi_tra")
     print("OCR 完成。")
